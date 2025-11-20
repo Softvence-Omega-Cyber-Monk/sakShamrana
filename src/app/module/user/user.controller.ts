@@ -59,26 +59,120 @@ const updateFaithSpirituality = catchAsync(async (req: Request, res: Response, n
 
 
 const updateProfessionalInformation = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-        const userId = req.authUser?._id;
-        const professionalData = req.body;
+    const userId = req.authUser?._id;
+    const professionalData = req.body;
 
-        const result = await userServices.iProfessionalInformation(
-            userId as string,
-            professionalData
-        );
+    const result = await userServices.iProfessionalInformation(
+        userId as string,
+        professionalData
+    );
 
-        sendResponse(res, {
-            success: true,
-            statusCode: 200,
-            message: "Professional information updated successfully",
-            data: result,
-        });
-    }
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: "Professional information updated successfully",
+        data: result,
+    });
+}
 );
+
+
+const updateLifeStyleInformation = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.authUser?._id;
+    const lifeStyleInformation = req.body;
+
+
+    const result = await userServices.lifeStyleInformation(userId, lifeStyleInformation);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: "Lifrstype Information Updated Successfully",
+        data: result
+    })
+
+});
+
+const updateIntarest = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+
+    const userId = req.authUser?._id;
+    const { interests } = req.body;
+
+    const result = await userServices.updateIntarest(userId, interests);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: "Intareste updated success",
+        data: result
+    })
+});
+const removeInterests = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+
+    const userId = req.authUser?._id;
+    const { interests } = req.body;
+
+    const result = await userServices.removeInterests(userId, interests);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: "Intareste removed success",
+        data: result
+    })
+});
+
+const updateBio = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.authUser?._id;
+    const bio = req.body.bio;
+
+    const result = await userServices.updateBio(userId, bio);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: "Bio Updated Success",
+        data: result
+    })
+
+})
+
+const updateMoodBio = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+
+    const userId = req.authUser?._id;
+    const { moodBio } = req.body;
+
+    const result = await userServices.updateIntarest(userId, moodBio);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: "Mood Bio updated success",
+        data: result
+    })
+});
+
+const updatePreferences = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.authUser._id;
+
+    const result = await userServices.updatePreferences(userId, req.body);
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: "Preferences updated success",
+        data: result
+    })
+})
 
 export const userController = {
     createUser,
     otpVerify,
     updateFaithSpirituality,
-    updateProfessionalInformation
+    updateProfessionalInformation,
+    updateLifeStyleInformation,
+    updateIntarest,
+    removeInterests,
+    updateBio,
+    updateMoodBio,
+    updatePreferences
 }

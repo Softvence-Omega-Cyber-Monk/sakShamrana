@@ -59,10 +59,81 @@ const updateProfessionalInformation = (0, catchAsync_1.default)(async (req, res,
         data: result,
     });
 });
+const updateLifeStyleInformation = (0, catchAsync_1.default)(async (req, res, next) => {
+    const userId = req.authUser?._id;
+    const lifeStyleInformation = req.body;
+    const result = await user_services_1.userServices.lifeStyleInformation(userId, lifeStyleInformation);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: 200,
+        message: "Lifrstype Information Updated Successfully",
+        data: result
+    });
+});
+const updateIntarest = (0, catchAsync_1.default)(async (req, res, next) => {
+    const userId = req.authUser?._id;
+    const { interests } = req.body;
+    const result = await user_services_1.userServices.updateIntarest(userId, interests);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: 200,
+        message: "Intareste updated success",
+        data: result
+    });
+});
+const removeInterests = (0, catchAsync_1.default)(async (req, res, next) => {
+    const userId = req.authUser?._id;
+    const { interests } = req.body;
+    const result = await user_services_1.userServices.removeInterests(userId, interests);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: 200,
+        message: "Intareste removed success",
+        data: result
+    });
+});
+const updateBio = (0, catchAsync_1.default)(async (req, res, next) => {
+    const userId = req.authUser?._id;
+    const bio = req.body.bio;
+    const result = await user_services_1.userServices.updateBio(userId, bio);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: 200,
+        message: "Bio Updated Success",
+        data: result
+    });
+});
+const updateMoodBio = (0, catchAsync_1.default)(async (req, res, next) => {
+    const userId = req.authUser?._id;
+    const { moodBio } = req.body;
+    const result = await user_services_1.userServices.updateIntarest(userId, moodBio);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: 200,
+        message: "Mood Bio updated success",
+        data: result
+    });
+});
+const updatePreferences = (0, catchAsync_1.default)(async (req, res, next) => {
+    const userId = req.authUser._id;
+    const result = await user_services_1.userServices.updatePreferences(userId, req.body);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: 200,
+        message: "Preferences updated success",
+        data: result
+    });
+});
 exports.userController = {
     createUser,
     otpVerify,
     updateFaithSpirituality,
-    updateProfessionalInformation
+    updateProfessionalInformation,
+    updateLifeStyleInformation,
+    updateIntarest,
+    removeInterests,
+    updateBio,
+    updateMoodBio,
+    updatePreferences
 };
 //# sourceMappingURL=user.controller.js.map

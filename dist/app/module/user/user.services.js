@@ -62,7 +62,6 @@ const otpVerify = async (userId, otp) => {
     return null;
 };
 const iFaithSpirituality = async (userId, payload) => {
-    console.log(userId);
     const { astrologicalDetails, ...rest } = payload;
     const updatedData = {};
     if (rest && Object.keys(rest).length > 0) {
@@ -102,10 +101,104 @@ const iProfessionalInformation = async (userId, payload) => {
     const result = await user_model_1.User.findByIdAndUpdate(userId, { $set: updatedData }, { new: true, runValidators: true });
     return result;
 };
+const lifeStyleInformation = async (userId, payload) => {
+    const updateData = {};
+    if (payload && Object.keys(payload).length > 0) {
+        Object.entries(payload).forEach(([key, value]) => {
+            if (value !== null && value !== undefined) {
+                updateData[`lifestypeInformation.${key}`] = value;
+            }
+        });
+    }
+    ;
+    const result = await user_model_1.User.findByIdAndUpdate(userId, {
+        $set: updateData
+    }, {
+        new: true,
+        runValidators: true
+    });
+    return result;
+};
+const updateIntarest = async (userId, payload) => {
+    if (!payload?.length)
+        return null;
+    // Clean payload → remove null, undefined, "", "   "
+    const cleanedPayload = payload.filter(item => item !== null &&
+        item !== undefined &&
+        typeof item === "string" &&
+        item.trim() !== "");
+    if (!cleanedPayload.length)
+        return null;
+    const result = await user_model_1.User.findByIdAndUpdate(userId, {
+        $addToSet: {
+            interests: { $each: cleanedPayload }
+        }
+    }, { new: true });
+    return result;
+};
+const removeInterests = async (userId, payload) => {
+    if (!payload?.length)
+        return null;
+    const result = await user_model_1.User.findByIdAndUpdate(userId, {
+        $pull: {
+            interests: { $in: payload }
+        }
+    }, { new: true });
+    return result;
+};
+const updateMoodeBio = async (userId, Payload) => {
+    if (!Payload || Payload.length === 0)
+        return null;
+    const result = await user_model_1.User.findByIdAndUpdate(userId, {
+        $addToSet: {
+            moodBio: { $each: Payload }
+        }
+    }, {
+        new: true
+    });
+    return result;
+};
+const updateBio = async (userId, bio) => {
+    if (bio === null || bio === undefined || bio === "")
+        throw new AppError_1.default(400, "Please give a valuable value");
+    const result = await user_model_1.User.findByIdAndUpdate(userId, {
+        bio: bio
+    }, {
+        new: true,
+        runValidators: true
+    });
+    return result;
+};
+const updatePreferences = async (userId, payload) => {
+    const updateData = {};
+    if (payload && Object.keys(payload).length > 0) {
+        if (typeof payload.politicalPreferences === "string" && payload.politicalPreferences.trim() !== "") {
+            updateData["preferences.politicalPreferences"] = payload.politicalPreferences.trim();
+        }
+        if (Array.isArray(payload.dealbreakerPreferences)) {
+            const cleanedArray = payload.dealbreakerPreferences.filter((item) => typeof item === "string" && item.trim() !== "");
+            if (cleanedArray.length > 0) {
+                updateData["preferences.dealbreakerPreferences"] = cleanedArray;
+            }
+        }
+    }
+    ;
+    if (Object.keys(updateData).length === 0) {
+        return null;
+    }
+    const result = await user_model_1.User.findByIdAndUpdate(userId, { $set: updateData }, { new: true, runValidators: true });
+    return result;
+};
 exports.userServices = {
     createUser,
     otpVerify,
     iFaithSpirituality,
-    iProfessionalInformation
+    iProfessionalInformation,
+    lifeStyleInformation,
+    updateIntarest,
+    removeInterests,
+    updateMoodeBio,
+    updateBio,
+    updatePreferences
 };
 //# sourceMappingURL=user.services.js.map

@@ -9,6 +9,8 @@ interface IEnv {
         SMTP_USER: string;
         SMTP_PASS: string;
     };
+    JWT_ACCESS_SECRATE: string;
+    JWT_REFRESH_SECRATE: string;
 }
 export declare const envVers: IEnv;
 export {};

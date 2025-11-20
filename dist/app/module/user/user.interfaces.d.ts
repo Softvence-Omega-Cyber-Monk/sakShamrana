@@ -62,6 +62,10 @@ export interface IVerification {
     photoIdVerification?: IPhotoIdVerification;
     qualityProfbadge?: IQualityProfBadge;
 }
+export declare enum ERole {
+    ADMIN = "ADMIN",
+    USER = "USER"
+}
 export interface IUser {
     _id?: Types.ObjectId;
     fullName?: string;
@@ -75,6 +79,7 @@ export interface IUser {
     moodBio?: string[];
     otp?: String | null;
     otpExpiry?: Date | null;
+    role?: String;
     otpVerifid: Boolean;
     dateOfBirth?: Date;
     gender?: 'Male' | 'Female' | 'Other';

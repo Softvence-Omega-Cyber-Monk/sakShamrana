@@ -37,8 +37,32 @@ const otpVerify = (0, catchAsync_1.default)(async (req, res, next) => {
         data: null
     });
 });
+const updateFaithSpirituality = (0, catchAsync_1.default)(async (req, res, next) => {
+    const id = req.authUser?._id;
+    const faithSpiritualityData = req.body;
+    const result = await user_services_1.userServices.iFaithSpirituality(id, faithSpiritualityData);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: 200,
+        message: "Faith and Spirituality information updated successfully",
+        data: result,
+    });
+});
+const updateProfessionalInformation = (0, catchAsync_1.default)(async (req, res, next) => {
+    const userId = req.authUser?._id;
+    const professionalData = req.body;
+    const result = await user_services_1.userServices.iProfessionalInformation(userId, professionalData);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: 200,
+        message: "Professional information updated successfully",
+        data: result,
+    });
+});
 exports.userController = {
     createUser,
-    otpVerify
+    otpVerify,
+    updateFaithSpirituality,
+    updateProfessionalInformation
 };
 //# sourceMappingURL=user.controller.js.map

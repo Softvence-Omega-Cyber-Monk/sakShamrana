@@ -61,8 +61,51 @@ const otpVerify = async (userId, otp) => {
     findUser.save();
     return null;
 };
+const iFaithSpirituality = async (userId, payload) => {
+    console.log(userId);
+    const { astrologicalDetails, ...rest } = payload;
+    const updatedData = {};
+    if (rest && Object.keys(rest).length > 0) {
+        Object.entries(rest).forEach(([key, value]) => {
+            if (value !== null && value !== undefined) {
+                updatedData[`faithSpirituality.${key}`] = value;
+            }
+        });
+    }
+    if (astrologicalDetails && Object.keys(astrologicalDetails).length > 0) {
+        Object.entries(astrologicalDetails).forEach(([key, value]) => {
+            if (value !== null && value !== undefined) {
+                updatedData[`faithSpirituality.astrologicalDetails.${key}`] = value;
+            }
+        });
+    }
+    const result = await user_model_1.User.findByIdAndUpdate(userId, {
+        $set: updatedData,
+    }, {
+        new: true,
+        runValidators: true,
+    });
+    return result;
+};
+const iProfessionalInformation = async (userId, payload) => {
+    const updatedData = {};
+    if (payload && Object.keys(payload).length > 0) {
+        Object.entries(payload).forEach(([key, value]) => {
+            if (value !== null && value !== undefined) {
+                updatedData[`profetionalInformation.${key}`] = value;
+            }
+        });
+    }
+    if (Object.keys(updatedData).length === 0) {
+        throw new Error("No valid fields to update");
+    }
+    const result = await user_model_1.User.findByIdAndUpdate(userId, { $set: updatedData }, { new: true, runValidators: true });
+    return result;
+};
 exports.userServices = {
     createUser,
-    otpVerify
+    otpVerify,
+    iFaithSpirituality,
+    iProfessionalInformation
 };
 //# sourceMappingURL=user.services.js.map

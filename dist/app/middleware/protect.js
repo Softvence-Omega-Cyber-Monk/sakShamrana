@@ -1,34 +1,34 @@
 "use strict";
-// import { NextFunction, Request, Response } from "express";
-// import { JwtPayload } from "jsonwebtoken";
-// import AppError from "../errorHelpers/app.error";
-// import { verifyToken } from "../utils/jwt";
-// import { User } from "../modules/users/user.model";
-// import { StatusCodes } from "http-status-codes";
-// import { Role } from "../modules/users/user.interface";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-// export const checkAuths = (...auths: string[]) => async (req: Request, res: Response, next: NextFunction) => {
-//     const token = req.cookies.accessToken;
-//     if (!token) {
-//         throw new AppError(400, "User not authorized!");
-//     };
-//     const validationUser = verifyToken(token) as JwtPayload;
-//     if (!validationUser) {
-//         throw new AppError(401, "User not valid");
-//     };
-//     const existUser = await User.findById(validationUser.payload.userID);
-//     if (!existUser) {
-//         throw new AppError(StatusCodes.NOT_FOUND, "User not found!");
-//     }
-//     if (existUser.isActive || existUser.isDeleted || existUser.isVerifid) {
-//         if (validationUser.payload.role === Role.USER || validationUser.payload.role === Role.GUIDE) {
-//             throw new AppError(StatusCodes.FORBIDDEN, "You are not authorized!")
-//         }
-//     }
-//     if (!auths.includes(validationUser.payload.role)) {
-//         throw new AppError(401, "You are not permited access this route!");
-//     }
-//     req.authUser = validationUser.payload;
-//     next();
-// }
+exports.checkAuths = void 0;
+const AppError_1 = __importDefault(require("../utils/AppError"));
+const verifyJwtToken_1 = require("../utils/verifyJwtToken");
+const env_1 = require("../config/env");
+const user_model_1 = require("../module/user/user.model");
+const checkAuths = (...auths) => async (req, res, next) => {
+    const token = req.headers?.authorization;
+    if (!token) {
+        throw new AppError_1.default(400, "User not authorized!");
+    }
+    ;
+    const verifyToken = (0, verifyJwtToken_1.verifyJwtToken)(token, env_1.envVers.JWT_ACCESS_SECRATE);
+    console.log(verifyToken);
+    const findUser = await user_model_1.User.findById(verifyToken.userId);
+    if (!findUser)
+        throw new AppError_1.default(404, "User not found");
+    if (findUser.role !== verifyToken.role || findUser._id.toString() !== verifyToken.userId) {
+        throw new AppError_1.default(403, "You are not permitted to access this route");
+    }
+    if (auths.length && !auths.includes(findUser?.role)) {
+        throw new AppError_1.default(400, "You are not permited access this route");
+    }
+    ;
+    const { password, otp, ...rest } = findUser.toObject();
+    req.authUser = rest;
+    next();
+};
+exports.checkAuths = checkAuths;
 //# sourceMappingURL=protect.js.map

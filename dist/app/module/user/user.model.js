@@ -10,10 +10,15 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const userSchema = new mongoose_1.default.Schema({
     fullName: { type: String },
     displayName: { type: String },
-    email: { type: String, unique: true },
+    email: { type: String },
     phoneNumber: { type: String },
     password: { type: String },
     profilePicture: [{ type: String }],
+    role: {
+        type: String,
+        enum: Object.values(user_interfaces_1.ERole),
+        default: user_interfaces_1.ERole.USER
+    },
     authProvider: [
         {
             provider: {

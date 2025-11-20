@@ -40,9 +40,45 @@ const otpVerify = catchAsync(async (req: Request, res: Response, next: NextFunct
         data: null
     })
 
-})
+});
+
+
+const updateFaithSpirituality = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.authUser?._id;
+    const faithSpiritualityData = req.body;
+
+    const result = await userServices.iFaithSpirituality(id as string, faithSpiritualityData);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: "Faith and Spirituality information updated successfully",
+        data: result,
+    });
+});
+
+
+const updateProfessionalInformation = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+        const userId = req.authUser?._id;
+        const professionalData = req.body;
+
+        const result = await userServices.iProfessionalInformation(
+            userId as string,
+            professionalData
+        );
+
+        sendResponse(res, {
+            success: true,
+            statusCode: 200,
+            message: "Professional information updated successfully",
+            data: result,
+        });
+    }
+);
 
 export const userController = {
     createUser,
-    otpVerify
+    otpVerify,
+    updateFaithSpirituality,
+    updateProfessionalInformation
 }

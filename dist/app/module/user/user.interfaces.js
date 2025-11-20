@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.EAuthProvider = void 0;
+exports.ERole = exports.EAuthProvider = void 0;
 // -------------------- Basic Information --------------------
 var EAuthProvider;
 (function (EAuthProvider) {
@@ -10,5 +10,12 @@ var EAuthProvider;
     EAuthProvider["FACEBOOK"] = "FACEBOOK";
 })(EAuthProvider || (exports.EAuthProvider = EAuthProvider = {}));
 ;
+;
+;
+var ERole;
+(function (ERole) {
+    ERole["ADMIN"] = "ADMIN";
+    ERole["USER"] = "USER";
+})(ERole || (exports.ERole = ERole = {}));
 ;
 //# sourceMappingURL=user.interfaces.js.map

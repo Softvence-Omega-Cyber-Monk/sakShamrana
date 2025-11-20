@@ -1,40 +1,37 @@
-// import { NextFunction, Request, Response } from "express";
-// import { JwtPayload } from "jsonwebtoken";
-// import AppError from "../errorHelpers/app.error";
-// import { verifyToken } from "../utils/jwt";
-// import { User } from "../modules/users/user.model";
-// import { StatusCodes } from "http-status-codes";
-// import { Role } from "../modules/users/user.interface";
+import { NextFunction, Request, Response } from "express";
+import { JwtPayload } from "jsonwebtoken";
+import AppError from "../utils/AppError";
+import { verifyJwtToken } from "../utils/verifyJwtToken";
+import { envVers } from "../config/env";
+import { User } from "../module/user/user.model";
 
-// export const checkAuths = (...auths: string[]) => async (req: Request, res: Response, next: NextFunction) => {
+export const checkAuths = (...auths: string[]) => async (req: Request, res: Response, next: NextFunction) => {
 
-//     const token = req.cookies.accessToken;
+    const token = req.headers?.authorization;
 
-//     if (!token) {
-//         throw new AppError(400, "User not authorized!");
-//     };
+    if (!token) {
+        throw new AppError(400, "User not authorized!");
+    };
 
-//     const validationUser = verifyToken(token) as JwtPayload;
+    const verifyToken = verifyJwtToken(token, envVers.JWT_ACCESS_SECRATE) as JwtPayload;
 
-//     if (!validationUser) {
-//         throw new AppError(401, "User not valid");
-//     };
-    
-//     const existUser = await User.findById(validationUser.payload.userID);
-   
-//     if (!existUser) {
-//         throw new AppError(StatusCodes.NOT_FOUND, "User not found!");
-//     }
+    console.log(verifyToken);
 
-//     if (existUser.isActive || existUser.isDeleted || existUser.isVerifid) {
-//         if (validationUser.payload.role === Role.USER || validationUser.payload.role === Role.GUIDE) {
-//             throw new AppError(StatusCodes.FORBIDDEN, "You are not authorized!")
-//         }
-//     }
+    const findUser = await User.findById(verifyToken.userId);
 
-//     if (!auths.includes(validationUser.payload.role)) {
-//         throw new AppError(401, "You are not permited access this route!");
-//     }
-//     req.authUser = validationUser.payload;
-//     next();
-// }
+    if (!findUser) throw new AppError(404, "User not found");
+
+    if (findUser.role !== verifyToken.role || findUser._id.toString() !== verifyToken.userId) {
+        throw new AppError(403, "You are not permitted to access this route");
+    }
+
+    if (auths.length && !auths.includes(findUser?.role as string)) {
+        throw new AppError(400, "You are not permited access this route");
+    };
+
+    const { password, otp, ...rest } = findUser.toObject();
+
+    req.authUser = rest;
+
+    next();
+}

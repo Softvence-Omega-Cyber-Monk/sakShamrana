@@ -82,7 +82,12 @@ export interface IQualityProfBadge {
 export interface IVerification {
     photoIdVerification?: IPhotoIdVerification;
     qualityProfbadge?: IQualityProfBadge;
-}
+};
+
+export enum ERole{
+    ADMIN = "ADMIN",
+    USER = "USER"
+};
 
 // -------------------- Main User Interface --------------------
 export interface IUser {
@@ -98,6 +103,7 @@ export interface IUser {
     moodBio?: string[];
     otp?: String | null;
     otpExpiry?: Date | null;
+    role ? : String;
     otpVerifid : Boolean;
     dateOfBirth?: Date;
     gender?: 'Male' | 'Female' | 'Other';

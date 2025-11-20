@@ -1,14 +1,19 @@
 import mongoose from "mongoose"
-import { EAuthProvider, IUser } from "./user.interfaces";
+import { EAuthProvider, ERole, IUser } from "./user.interfaces";
 import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema<IUser>({
     fullName: { type: String },
     displayName: { type: String },
-    email: { type: String, unique: true },
+    email: { type: String},
     phoneNumber: { type: String },
     password: { type: String },
     profilePicture: [{ type: String }],
+    role: {
+        type: String,
+        enum: Object.values(ERole),
+        default: ERole.USER
+    },
     authProvider: [
         {
             provider: {

@@ -6,6 +6,11 @@ interface IEnv {
     MONGO_URI: string,
     PORT: string,
     DEV_ENVIRONMENT: string,
+    CLOUDINARY: {
+        CLOUDINARY_API_SECRATE: string,
+        CLOUDINARY_API_KEY: string,
+        CLOUDINARY_CLOUD_NAME: string,
+    },
     SEND_EMAIL: {
         SMTP_HOST: string,
         SMTP_PORT: string,
@@ -18,7 +23,7 @@ interface IEnv {
 }
 
 const envChecker = (): IEnv => {
-    const requiredEnv: string[] = ["MONGO_URI", "PORT", "DEV_ENVIRONMENT", "SMTP_HOST", "SMTP_PORT", "SMTP_FORM", "SMTP_USER", "SMTP_PASS", "JWT_ACCESS_SECRATE", "JWT_REFRESH_SECRATE"];
+    const requiredEnv: string[] = ["MONGO_URI", "PORT", "DEV_ENVIRONMENT", "SMTP_HOST", "SMTP_PORT", "SMTP_FORM", "SMTP_USER", "SMTP_PASS", "JWT_ACCESS_SECRATE", "JWT_REFRESH_SECRATE", "CLOUDINARY_API_SECRATE", "CLOUDINARY_API_KEY", "CLOUDINARY_CLOUD_NAME"];
 
     requiredEnv.forEach((key) => {
         if (!process.env[key]) {
@@ -38,7 +43,12 @@ const envChecker = (): IEnv => {
             SMTP_FORM: process.env.SMTP_FORM as string,
             SMTP_USER: process.env.SMTP_USER as string,
             SMTP_PASS: process.env.SMTP_PASS as string
-        }
+        },
+        CLOUDINARY: {
+            CLOUDINARY_API_SECRATE: process.env.CLOUDINARY_API_SECRATE as string,
+            CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY as string,
+            CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME as string
+        },
     }
 };
 

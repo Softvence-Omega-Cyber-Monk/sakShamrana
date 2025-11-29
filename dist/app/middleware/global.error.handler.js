@@ -8,20 +8,23 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const zod_1 = require("zod");
 const AppError_1 = __importDefault(require("../utils/AppError"));
 const env_1 = require("../config/env");
-const globalErrorhandler = (err, req, res, next) => {
+const cloudinary_config_1 = require("../config/cloudinary.config");
+const globalErrorhandler = async (err, req, res, next) => {
     let statusCode = 500;
     let message = "Something went wrong";
     let errorStore = [];
     //   if(envVar.node_env === "development"){
     //     console.log(err)
     // };
-    // if(req.file){
-    //     await deleteImageFormCloudinary(req.file.path);
-    // };
-    // if(req.files && Array.isArray(req.files) && req.files.length){
-    //     const imageUrl = (req.files as Express.Multer.File[]).map((data) => data.path);
-    //     await Promise.all(imageUrl.map((url) => deleteImageFormCloudinary(url)))
-    // };
+    if (req.file) {
+        await (0, cloudinary_config_1.deleteImageFormCloudinary)(req.file.path);
+    }
+    ;
+    if (req.files && Array.isArray(req.files) && req.files.length) {
+        const imageUrl = req.files.map((data) => data.path);
+        await Promise.all(imageUrl.map((url) => (0, cloudinary_config_1.deleteImageFormCloudinary)(url)));
+    }
+    ;
     // handle Zod Error
     if (err instanceof zod_1.ZodError) {
         const issue = err.issues;

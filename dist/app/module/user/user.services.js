@@ -189,6 +189,46 @@ const updatePreferences = async (userId, payload) => {
     const result = await user_model_1.User.findByIdAndUpdate(userId, { $set: updateData }, { new: true, runValidators: true });
     return result;
 };
+const updateBasicInfo = async (userId, payload) => {
+    const allowedFields = [
+        "fullName",
+        "displayName",
+        "email",
+        "phoneNumber",
+        "dateOfBirth",
+        "gender",
+        "nationality",
+        "location",
+        "profilePicture"
+    ];
+    const filteredPayload = {};
+    allowedFields.forEach((field) => {
+        let value = payload[field];
+        if (value !== null && value !== undefined && value !== "") {
+            if (field === "location" && typeof value === "string") {
+                try {
+                    value = JSON.parse(value);
+                }
+                catch (error) {
+                    throw new AppError_1.default(400, "Invalid location JSON format");
+                }
+            }
+            if (field === "profilePicture") {
+                if (value && typeof value === "object" && "path" in value) {
+                    value = value.path;
+                }
+            }
+            filteredPayload[field] = value;
+        }
+    });
+    if (Object.keys(filteredPayload).length === 0) {
+        throw new AppError_1.default(400, "No valid fields to update");
+    }
+    const result = await user_model_1.User.findByIdAndUpdate(userId, filteredPayload, { new: true });
+    if (!result)
+        throw new AppError_1.default(400, "User not found");
+    return result;
+};
 exports.userServices = {
     createUser,
     otpVerify,
@@ -199,6 +239,7 @@ exports.userServices = {
     removeInterests,
     updateMoodeBio,
     updateBio,
-    updatePreferences
+    updatePreferences,
+    updateBasicInfo
 };
 //# sourceMappingURL=user.services.js.map

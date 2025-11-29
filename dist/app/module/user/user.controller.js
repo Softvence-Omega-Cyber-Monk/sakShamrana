@@ -124,6 +124,22 @@ const updatePreferences = (0, catchAsync_1.default)(async (req, res, next) => {
         data: result
     });
 });
+const updateBasicInfo = (0, catchAsync_1.default)(async (req, res, next) => {
+    const userId = req.authUser._id;
+    const payload = {
+        ...req.body
+    };
+    if (req.file) {
+        payload.profilePicture = req.file;
+    }
+    const result = await user_services_1.userServices.updateBasicInfo(userId, payload);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: 200,
+        message: "Profile Update Success",
+        data: result
+    });
+});
 exports.userController = {
     createUser,
     otpVerify,
@@ -134,6 +150,7 @@ exports.userController = {
     removeInterests,
     updateBio,
     updateMoodBio,
-    updatePreferences
+    updatePreferences,
+    updateBasicInfo
 };
 //# sourceMappingURL=user.controller.js.map

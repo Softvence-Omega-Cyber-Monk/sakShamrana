@@ -5,10 +5,10 @@ import bcrypt from "bcrypt";
 const userSchema = new mongoose.Schema<IUser>({
     fullName: { type: String },
     displayName: { type: String },
-    email: { type: String},
+    email: { type: String },
     phoneNumber: { type: String },
     password: { type: String },
-    profilePicture: [{ type: String }],
+    profilePicture: { type: String },
     role: {
         type: String,
         enum: Object.values(ERole),

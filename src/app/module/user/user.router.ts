@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { userController } from "./user.controller";
 import { checkAuths } from "../../middleware/protect";
+import { multerUpload } from "../../config/multer.config";
 
 const userRouter = Router();
 
@@ -16,7 +17,7 @@ userRouter.patch("/update_intarest" , checkAuths() , userController.updateIntare
 userRouter.patch("/remove_intarest" , checkAuths() , userController.removeInterests);
 userRouter.patch("/updateBio" , checkAuths() , userController.updateBio);
 userRouter.patch("/update_prefarances" , checkAuths() , userController.updatePreferences);
-
+userRouter.patch("/update_basic_info" , checkAuths() , multerUpload.single("profilePicture") ,userController.updateBasicInfo);
 
 
 export default userRouter;

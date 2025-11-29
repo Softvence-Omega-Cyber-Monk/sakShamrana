@@ -162,6 +162,29 @@ const updatePreferences = catchAsync(async (req: Request, res: Response, next: N
         message: "Preferences updated success",
         data: result
     })
+});
+
+const updateBasicInfo = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+
+    const userId = req.authUser._id;
+
+    const payload = {
+        ...req.body
+    };
+
+    if (req.file) {
+        payload.profilePicture = req.file
+    }
+
+    const result = await userServices.updateBasicInfo(userId, payload);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: "Profile Update Success",
+        data: result
+    })
+
 })
 
 export const userController = {
@@ -174,5 +197,6 @@ export const userController = {
     removeInterests,
     updateBio,
     updateMoodBio,
-    updatePreferences
+    updatePreferences,
+    updateBasicInfo
 }

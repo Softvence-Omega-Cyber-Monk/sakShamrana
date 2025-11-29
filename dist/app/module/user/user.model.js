@@ -13,7 +13,7 @@ const userSchema = new mongoose_1.default.Schema({
     email: { type: String },
     phoneNumber: { type: String },
     password: { type: String },
-    profilePicture: [{ type: String }],
+    profilePicture: { type: String },
     role: {
         type: String,
         enum: Object.values(user_interfaces_1.ERole),

@@ -3,13 +3,14 @@ import mongoose from "mongoose";
 import { ZodError } from "zod";
 import AppError from "../utils/AppError";
 import { envVers } from "../config/env";
+import { deleteImageFormCloudinary } from "../config/cloudinary.config";
 
 interface IErrorStore {
     path: string,
     message: string
 }
 
-export const globalErrorhandler = (err: any, req: Request, res: Response, next: NextFunction) => {
+export const globalErrorhandler = async(err: any, req: Request, res: Response, next: NextFunction) => {
     let statusCode = 500;
     let message = "Something went wrong";
     let errorStore: IErrorStore[] = [];
@@ -18,14 +19,14 @@ export const globalErrorhandler = (err: any, req: Request, res: Response, next: 
     //     console.log(err)
     // };
 
-    // if(req.file){
-    //     await deleteImageFormCloudinary(req.file.path);
-    // };
+    if(req.file){
+        await deleteImageFormCloudinary(req.file.path);
+    };
 
-    // if(req.files && Array.isArray(req.files) && req.files.length){
-    //     const imageUrl = (req.files as Express.Multer.File[]).map((data) => data.path);
-    //     await Promise.all(imageUrl.map((url) => deleteImageFormCloudinary(url)))
-    // };
+    if(req.files && Array.isArray(req.files) && req.files.length){
+        const imageUrl = (req.files as Express.Multer.File[]).map((data) => data.path);
+        await Promise.all(imageUrl.map((url) => deleteImageFormCloudinary(url)))
+    };
 
     // handle Zod Error
     if (err instanceof ZodError) {

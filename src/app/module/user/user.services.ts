@@ -2,7 +2,7 @@ import { Types } from "mongoose";
 import { sendEmail } from "../../config/sendEmail";
 import AppError from "../../utils/AppError";
 import { generateOtp } from "../../utils/generateOtp";
-import { EAuthProvider, ICreateUserRequest, IFaithSpirituality, ILifestyleInformation, IPreferences } from "./user.interfaces";
+import { EAuthProvider, ICreateUserRequest, IFaithSpirituality, ILifestyleInformation, IPreferences, IUser } from "./user.interfaces";
 import { User } from "./user.model";
 import bcrypt from "bcrypt"
 
@@ -246,7 +246,7 @@ const updatePreferences = async (userId: Types.ObjectId, payload: Partial<IPrefe
         }
 
         if (Array.isArray(payload.dealbreakerPreferences)) {
-            const cleanedArray = payload.dealbreakerPreferences.filter((item) => typeof item === "string" && item.trim() !== "" );
+            const cleanedArray = payload.dealbreakerPreferences.filter((item) => typeof item === "string" && item.trim() !== "");
 
             if (cleanedArray.length > 0) {
                 updateData["preferences.dealbreakerPreferences"] = cleanedArray;
@@ -267,6 +267,61 @@ const updatePreferences = async (userId: Types.ObjectId, payload: Partial<IPrefe
     return result;
 };
 
+const updateBasicInfo = async (userId: string, payload: Partial<IUser>) => {
+
+    const allowedFields: (keyof IUser)[] = [
+        "fullName",
+        "displayName",
+        "email",
+        "phoneNumber",
+        "dateOfBirth",
+        "gender",
+        "nationality",
+        "location",
+        "profilePicture"
+    ];
+
+    const filteredPayload: { [key in keyof IUser]?: any } = {};
+
+    allowedFields.forEach((field) => {
+        let value = payload[field];
+
+        if (value !== null && value !== undefined && value !== "") {
+
+            if (field === "location" && typeof value === "string") {
+                try {
+                    value = JSON.parse(value);
+                } catch (error) {
+                     throw new AppError(400 , "Invalid location JSON format")
+                }
+            }
+
+
+            if (field === "profilePicture") {
+                if (value && typeof value === "object" && "path" in value) {
+                    value = (value as any).path;
+                }
+            }
+
+            filteredPayload[field] = value;
+        }
+    });
+
+    if (Object.keys(filteredPayload).length === 0) {
+        throw new AppError(400, "No valid fields to update");
+    }
+
+    const result = await User.findByIdAndUpdate(
+        userId,
+        filteredPayload,
+        { new: true }
+    );
+
+    if (!result) throw new AppError(400, "User not found");
+
+    return result;
+};
+
 
 
 export const userServices = {
@@ -279,5 +334,6 @@ export const userServices = {
     removeInterests,
     updateMoodeBio,
     updateBio,
-    updatePreferences
+    updatePreferences,
+    updateBasicInfo
 }

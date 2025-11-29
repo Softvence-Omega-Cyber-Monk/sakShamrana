@@ -153,7 +153,7 @@ const updateMoodBio = catchAsync(async (req: Request, res: Response, next: NextF
 });
 
 const updatePreferences = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const userId = req.authUser._id;
+    const userId = req.authUser?._id;
 
     const result = await userServices.updatePreferences(userId, req.body);
     sendResponse(res, {
@@ -166,7 +166,7 @@ const updatePreferences = catchAsync(async (req: Request, res: Response, next: N
 
 const updateBasicInfo = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
-    const userId = req.authUser._id;
+    const userId = req.authUser?._id;
 
     const payload = {
         ...req.body
@@ -185,6 +185,23 @@ const updateBasicInfo = catchAsync(async (req: Request, res: Response, next: Nex
         data: result
     })
 
+});
+
+
+const updateUserGalaryImage = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+
+    const userId = req.authUser?._id;
+
+    const files = req.files as Express.Multer.File[];
+
+    const result = await userServices.updateGalaryImage(userId, files);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: "Profile galary images updated success",
+        data: null
+    });
 })
 
 export const userController = {
@@ -198,5 +215,6 @@ export const userController = {
     updateBio,
     updateMoodBio,
     updatePreferences,
-    updateBasicInfo
+    updateBasicInfo,
+    updateUserGalaryImage
 }

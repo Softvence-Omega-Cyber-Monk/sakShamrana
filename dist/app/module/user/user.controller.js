@@ -115,7 +115,7 @@ const updateMoodBio = (0, catchAsync_1.default)(async (req, res, next) => {
     });
 });
 const updatePreferences = (0, catchAsync_1.default)(async (req, res, next) => {
-    const userId = req.authUser._id;
+    const userId = req.authUser?._id;
     const result = await user_services_1.userServices.updatePreferences(userId, req.body);
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
@@ -125,7 +125,7 @@ const updatePreferences = (0, catchAsync_1.default)(async (req, res, next) => {
     });
 });
 const updateBasicInfo = (0, catchAsync_1.default)(async (req, res, next) => {
-    const userId = req.authUser._id;
+    const userId = req.authUser?._id;
     const payload = {
         ...req.body
     };
@@ -140,6 +140,17 @@ const updateBasicInfo = (0, catchAsync_1.default)(async (req, res, next) => {
         data: result
     });
 });
+const updateUserGalaryImage = (0, catchAsync_1.default)(async (req, res, next) => {
+    const userId = req.authUser?._id;
+    const files = req.files;
+    const result = await user_services_1.userServices.updateGalaryImage(userId, files);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: 200,
+        message: "Profile galary images updated success",
+        data: null
+    });
+});
 exports.userController = {
     createUser,
     otpVerify,
@@ -151,6 +162,7 @@ exports.userController = {
     updateBio,
     updateMoodBio,
     updatePreferences,
-    updateBasicInfo
+    updateBasicInfo,
+    updateUserGalaryImage
 };
 //# sourceMappingURL=user.controller.js.map

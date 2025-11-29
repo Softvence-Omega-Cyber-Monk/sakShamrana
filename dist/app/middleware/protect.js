@@ -15,7 +15,6 @@ const checkAuths = (...auths) => async (req, res, next) => {
     }
     ;
     const verifyToken = (0, verifyJwtToken_1.verifyJwtToken)(token, env_1.envVers.JWT_ACCESS_SECRATE);
-    console.log(verifyToken);
     const findUser = await user_model_1.User.findById(verifyToken.userId);
     if (!findUser)
         throw new AppError_1.default(404, "User not found");

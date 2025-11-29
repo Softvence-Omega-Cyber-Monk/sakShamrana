@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema<IUser>({
     phoneNumber: { type: String },
     password: { type: String },
     profilePicture: { type: String },
+    galaryImage: [],
     role: {
         type: String,
         enum: Object.values(ERole),
@@ -29,6 +30,7 @@ const userSchema = new mongoose.Schema<IUser>({
     ],
     bio: { type: String },
     moodBio: [],
+
     otp: {
         type: String,
         default: null

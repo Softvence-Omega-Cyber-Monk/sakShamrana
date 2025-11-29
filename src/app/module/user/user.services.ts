@@ -4,7 +4,7 @@ import AppError from "../../utils/AppError";
 import { generateOtp } from "../../utils/generateOtp";
 import { EAuthProvider, ICreateUserRequest, IFaithSpirituality, ILifestyleInformation, IPreferences, IUser } from "./user.interfaces";
 import { User } from "./user.model";
-import bcrypt from "bcrypt"
+import bcrypt from "bcrypt";
 
 const createUser = async (data: Partial<ICreateUserRequest>) => {
 
@@ -292,7 +292,7 @@ const updateBasicInfo = async (userId: string, payload: Partial<IUser>) => {
                 try {
                     value = JSON.parse(value);
                 } catch (error) {
-                     throw new AppError(400 , "Invalid location JSON format")
+                    throw new AppError(400, "Invalid location JSON format")
                 }
             }
 
@@ -322,6 +322,28 @@ const updateBasicInfo = async (userId: string, payload: Partial<IUser>) => {
     return result;
 };
 
+const updateGalaryImage = async (userId: string, files: Express.Multer.File[]) => {
+    if (!files || files.length === 0) {
+        throw new AppError(400, "No images uploaded");
+    };
+
+
+    const imageUrls = files
+        .filter((file) => file && typeof file === "object" && "path" in file)
+        .map((file: any) => file.path);
+
+    const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        {
+            $push: { galaryImage: { $each: imageUrls } }
+        },
+        { new: true }
+    );
+
+    if (!updatedUser) throw new AppError(404, "User not found");
+
+    return updatedUser;
+};
 
 
 export const userServices = {
@@ -335,5 +357,6 @@ export const userServices = {
     updateMoodeBio,
     updateBio,
     updatePreferences,
-    updateBasicInfo
+    updateBasicInfo,
+    updateGalaryImage
 }

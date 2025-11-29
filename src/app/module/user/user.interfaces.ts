@@ -84,7 +84,7 @@ export interface IVerification {
     qualityProfbadge?: IQualityProfBadge;
 };
 
-export enum ERole{
+export enum ERole {
     ADMIN = "ADMIN",
     USER = "USER"
 };
@@ -103,9 +103,10 @@ export interface IUser {
     moodBio?: string[];
     otp?: String | null;
     otpExpiry?: Date | null;
-    role ? : String;
-    otpVerifid : Boolean;
+    role?: String;
+    otpVerifid: Boolean;
     dateOfBirth?: Date;
+    galaryImage?: string[];
     gender?: 'Male' | 'Female' | 'Other';
     nationality?: string;
     location?: ILocation;

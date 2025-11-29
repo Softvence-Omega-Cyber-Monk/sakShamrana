@@ -15,8 +15,6 @@ export const checkAuths = (...auths: string[]) => async (req: Request, res: Resp
 
     const verifyToken = verifyJwtToken(token, envVers.JWT_ACCESS_SECRATE) as JwtPayload;
 
-    console.log(verifyToken);
-
     const findUser = await User.findById(verifyToken.userId);
 
     if (!findUser) throw new AppError(404, "User not found");

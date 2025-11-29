@@ -11,5 +11,6 @@ export declare const userController: {
     updateMoodBio: (req: Request, res: Response, next: NextFunction) => void;
     updatePreferences: (req: Request, res: Response, next: NextFunction) => void;
     updateBasicInfo: (req: Request, res: Response, next: NextFunction) => void;
+    updateUserGalaryImage: (req: Request, res: Response, next: NextFunction) => void;
 };
 //# sourceMappingURL=user.controller.d.ts.map

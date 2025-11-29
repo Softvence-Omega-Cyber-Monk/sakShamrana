@@ -82,6 +82,7 @@ export interface IUser {
     role?: String;
     otpVerifid: Boolean;
     dateOfBirth?: Date;
+    galaryImage?: string[];
     gender?: 'Male' | 'Female' | 'Other';
     nationality?: string;
     location?: ILocation;

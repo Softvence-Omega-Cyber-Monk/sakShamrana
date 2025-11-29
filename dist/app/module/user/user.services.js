@@ -229,6 +229,21 @@ const updateBasicInfo = async (userId, payload) => {
         throw new AppError_1.default(400, "User not found");
     return result;
 };
+const updateGalaryImage = async (userId, files) => {
+    if (!files || files.length === 0) {
+        throw new AppError_1.default(400, "No images uploaded");
+    }
+    ;
+    const imageUrls = files
+        .filter((file) => file && typeof file === "object" && "path" in file)
+        .map((file) => file.path);
+    const updatedUser = await user_model_1.User.findByIdAndUpdate(userId, {
+        $push: { galaryImage: { $each: imageUrls } }
+    }, { new: true });
+    if (!updatedUser)
+        throw new AppError_1.default(404, "User not found");
+    return updatedUser;
+};
 exports.userServices = {
     createUser,
     otpVerify,
@@ -240,6 +255,7 @@ exports.userServices = {
     updateMoodeBio,
     updateBio,
     updatePreferences,
-    updateBasicInfo
+    updateBasicInfo,
+    updateGalaryImage
 };
 //# sourceMappingURL=user.services.js.map

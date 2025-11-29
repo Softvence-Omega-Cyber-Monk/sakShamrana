@@ -57,5 +57,10 @@ export declare const userServices: {
     }> & {
         __v: number;
     }>;
+    updateGalaryImage: (userId: string, files: Express.Multer.File[]) => Promise<import("mongoose").Document<unknown, {}, IUser, {}, {}> & IUser & Required<{
+        _id: Types.ObjectId;
+    }> & {
+        __v: number;
+    }>;
 };
 //# sourceMappingURL=user.services.d.ts.map

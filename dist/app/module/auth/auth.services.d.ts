@@ -16,6 +16,7 @@ export declare const authServices: {
         role?: String;
         otpVerifid: Boolean;
         dateOfBirth?: Date;
+        galaryImage?: string[];
         gender?: "Male" | "Female" | "Other";
         nationality?: string;
         location?: import("../user/user.interfaces").ILocation;

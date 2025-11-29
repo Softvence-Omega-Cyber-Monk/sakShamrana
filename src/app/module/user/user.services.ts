@@ -5,7 +5,6 @@ import { generateOtp } from "../../utils/generateOtp";
 import { EAuthProvider, ICreateUserRequest, IFaithSpirituality, ILifestyleInformation, IPreferences } from "./user.interfaces";
 import { User } from "./user.model";
 import bcrypt from "bcrypt"
-import { sendResponse } from "../../utils/sendResponse";
 
 const createUser = async (data: Partial<ICreateUserRequest>) => {
 

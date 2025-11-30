@@ -144,6 +144,10 @@ export interface IUser {
     isBlurTokenUnlimited?: boolean;
     expireDateSubscription?: Date;
 
+    totalDipositAmount?: number;
+    totalWithdrowAmount?: number;
+    totalBalance?: number;
+
     createdAt?: Date;
     updatedAt?: Date;
 }

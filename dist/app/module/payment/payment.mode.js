@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Payment = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
+const payment_interfaces_1 = require("./payment.interfaces");
 const paymentSchema = new mongoose_1.default.Schema({
     userId: {
         type: mongoose_1.default.Schema.Types.ObjectId,
@@ -18,6 +19,11 @@ const paymentSchema = new mongoose_1.default.Schema({
     amount: {
         type: Number,
         required: true
+    },
+    paymentStatus: {
+        type: String,
+        enum: payment_interfaces_1.PStatus,
+        default: payment_interfaces_1.PStatus.PENDING
     }
 }, {
     timestamps: true,

@@ -2,10 +2,8 @@ import { Router } from "express";
 import { userController } from "./user.controller";
 import { checkAuths } from "../../middleware/protect";
 import { multerUpload } from "../../config/multer.config";
-import multer from "multer";
 
 const userRouter = Router();
-const upload = multer({ storage: multer.memoryStorage() });
 
 
 userRouter.post("/create", userController.createUser);
@@ -20,6 +18,8 @@ userRouter.patch("/remove_intarest", checkAuths(), userController.removeInterest
 userRouter.patch("/updateBio", checkAuths(), userController.updateBio);
 userRouter.patch("/update_prefarances", checkAuths(), userController.updatePreferences);
 userRouter.patch("/update_basic_info", checkAuths(), multerUpload.single("profilePicture"), userController.updateBasicInfo);
-userRouter.patch("/update_profile_galary", checkAuths(), upload.array("profiles"), userController.updateUserGalaryImage);
+userRouter.patch("/update_profile_galary", checkAuths(), multerUpload.array("profiles"), userController.updateUserGalaryImage);
+userRouter.patch("/photo_id_verification" , checkAuths() , userController.updatePhotoIdVerification);
+userRouter.patch("/quality_proof_verification" , checkAuths() , multerUpload.single("certificate") ,userController.updateQualityProofBadges);
 
 export default userRouter;

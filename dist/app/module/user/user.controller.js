@@ -151,6 +151,30 @@ const updateUserGalaryImage = (0, catchAsync_1.default)(async (req, res, next) =
         data: null
     });
 });
+const updatePhotoIdVerification = (0, catchAsync_1.default)(async (req, res, next) => {
+    const userId = req.authUser?._id;
+    const result = await user_services_1.userServices.updatePhotoIdVerification(userId, req.body);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: 200,
+        message: "Photo Id verification successfully",
+        data: result
+    });
+});
+const updateQualityProofBadges = (0, catchAsync_1.default)(async (req, res, next) => {
+    const userId = req.authUser?._id;
+    const payload = {
+        ...req.body,
+        certificate: req.file?.path
+    };
+    const result = await user_services_1.userServices.updateQualityProfBadge(userId, payload);
+    (0, sendResponse_1.sendResponse)(res, {
+        statusCode: 200,
+        success: true,
+        message: "Your Quality Proof request has been sent to our official community members.",
+        data: result
+    });
+});
 exports.userController = {
     createUser,
     otpVerify,
@@ -163,6 +187,8 @@ exports.userController = {
     updateMoodBio,
     updatePreferences,
     updateBasicInfo,
-    updateUserGalaryImage
+    updateUserGalaryImage,
+    updatePhotoIdVerification,
+    updateQualityProofBadges
 };
 //# sourceMappingURL=user.controller.js.map

@@ -202,6 +202,37 @@ const updateUserGalaryImage = catchAsync(async (req: Request, res: Response, nex
         message: "Profile galary images updated success",
         data: null
     });
+});
+
+
+const updatePhotoIdVerification = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.authUser?._id;
+    const result = await userServices.updatePhotoIdVerification(userId, req.body);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: 200,
+        message: "Photo Id verification successfully",
+        data: result
+    })
+});
+
+const updateQualityProofBadges = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.authUser?._id;
+
+    const payload = {
+        ...req.body,
+        certificate: req.file?.path
+    }
+    const result = await userServices.updateQualityProfBadge(userId, payload);
+
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: "Your Quality Proof request has been sent to our official community members.",
+        data: result
+    })
+
 })
 
 export const userController = {
@@ -216,5 +247,7 @@ export const userController = {
     updateMoodBio,
     updatePreferences,
     updateBasicInfo,
-    updateUserGalaryImage
+    updateUserGalaryImage,
+    updatePhotoIdVerification,
+    updateQualityProofBadges
 }

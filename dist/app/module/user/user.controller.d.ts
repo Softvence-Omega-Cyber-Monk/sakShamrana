@@ -12,5 +12,7 @@ export declare const userController: {
     updatePreferences: (req: Request, res: Response, next: NextFunction) => void;
     updateBasicInfo: (req: Request, res: Response, next: NextFunction) => void;
     updateUserGalaryImage: (req: Request, res: Response, next: NextFunction) => void;
+    updatePhotoIdVerification: (req: Request, res: Response, next: NextFunction) => void;
+    updateQualityProofBadges: (req: Request, res: Response, next: NextFunction) => void;
 };
 //# sourceMappingURL=user.controller.d.ts.map

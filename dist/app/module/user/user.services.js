@@ -247,12 +247,10 @@ const updateGalaryImage = async (userId, files) => {
 const updatePhotoIdVerification = async (userId, payload) => {
     const updateData = {};
     if (typeof payload.verificationType === "string" && payload.verificationType.trim() !== "") {
-        updateData["verification.photoIdVerification.verificationType"] =
-            payload.verificationType.trim();
+        updateData["verification.photoIdVerification.verificationType"] = payload.verificationType.trim();
     }
     if (typeof payload.idNumber === "string" && payload.idNumber.trim() !== "") {
-        updateData["verification.photoIdVerification.idNumber"] =
-            payload.idNumber.trim();
+        updateData["verification.photoIdVerification.idNumber"] = payload.idNumber.trim();
     }
     ;
     if (Object.keys(updateData).length === 0) {

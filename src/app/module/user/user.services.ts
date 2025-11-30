@@ -2,7 +2,7 @@ import { Types } from "mongoose";
 import { sendEmail } from "../../config/sendEmail";
 import AppError from "../../utils/AppError";
 import { generateOtp } from "../../utils/generateOtp";
-import { EAuthProvider, ICreateUserRequest, IFaithSpirituality, ILifestyleInformation, IPreferences, IUser } from "./user.interfaces";
+import { EAuthProvider, EStatus, ICreateUserRequest, IFaithSpirituality, ILifestyleInformation, IPhotoIdVerification, IPreferences, IQualityProfBadge, IUser } from "./user.interfaces";
 import { User } from "./user.model";
 import bcrypt from "bcrypt";
 
@@ -346,6 +346,68 @@ const updateGalaryImage = async (userId: string, files: Express.Multer.File[]) =
 };
 
 
+const updatePhotoIdVerification = async (userId: Types.ObjectId, payload: Partial<IPhotoIdVerification>) => {
+    const updateData: Record<string, unknown> = {};
+
+    if (typeof payload.verificationType === "string" && payload.verificationType.trim() !== "") {
+        updateData["verification.photoIdVerification.verificationType"] =
+            payload.verificationType.trim();
+    }
+
+    if (typeof payload.idNumber === "string" && payload.idNumber.trim() !== "") {
+        updateData["verification.photoIdVerification.idNumber"] =
+            payload.idNumber.trim();
+    };
+
+    if (Object.keys(updateData).length === 0) {
+        return null;
+    }
+
+    const result = await User.findByIdAndUpdate(
+        userId,
+        { $set: updateData },
+        { new: true, runValidators: true }
+    );
+
+    return result;
+};
+
+
+const updateQualityProfBadge = async (userId: Types.ObjectId, payload: Partial<IQualityProfBadge>) => {
+    const updateData: Record<string, unknown> = {};
+
+    let hasValidUpdate = false;
+
+    const isValid = (value: any) => typeof value === "string" && value.trim() !== "" && value !== null && value !== undefined;
+
+    if (isValid(payload.verificationType)) {
+        updateData["verification.qualityProfbadge.verificationType"] = payload.verificationType!.trim();
+        hasValidUpdate = true;
+    };
+
+    if (isValid(payload.certificate)) {
+        updateData["verification.qualityProfbadge.certificate"] = payload.certificate!.trim();
+        hasValidUpdate = true;
+    }
+
+    if (hasValidUpdate) {
+        updateData["verification.qualityProfbadge.isQualityProfbadge"] = EStatus.REQUEST;
+    }
+
+    if (!hasValidUpdate) {
+        return null;
+    }
+
+    const result = await User.findByIdAndUpdate(
+        userId,
+        { $set: updateData },
+        { new: true, runValidators: true }
+    );
+
+    return result;
+};
+
+
 export const userServices = {
     createUser,
     otpVerify,
@@ -358,5 +420,7 @@ export const userServices = {
     updateBio,
     updatePreferences,
     updateBasicInfo,
-    updateGalaryImage
+    updateGalaryImage,
+    updatePhotoIdVerification,
+    updateQualityProfBadge
 }

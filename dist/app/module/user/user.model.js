@@ -115,6 +115,11 @@ const userSchema = new mongoose_1.default.Schema({
             },
             certificate: {
                 type: String
+            },
+            isQualityProfbadge: {
+                type: String,
+                enum: user_interfaces_1.EStatus,
+                default: user_interfaces_1.EStatus.NON
             }
         },
     },

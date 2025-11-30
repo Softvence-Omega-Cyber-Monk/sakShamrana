@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-import { EAuthProvider, ERole, IUser } from "./user.interfaces";
+import { EAuthProvider, ERole, EStatus, IUser } from "./user.interfaces";
 import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema<IUser>({
@@ -117,6 +117,11 @@ const userSchema = new mongoose.Schema<IUser>({
             },
             certificate: {
                 type: String
+            },
+            isQualityProfbadge: {
+                type: String,
+                enum: EStatus,
+                default: EStatus.NON
             }
         },
 

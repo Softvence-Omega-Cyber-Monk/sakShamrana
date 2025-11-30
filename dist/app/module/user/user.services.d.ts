@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { ICreateUserRequest, IFaithSpirituality, ILifestyleInformation, IPreferences, IUser } from "./user.interfaces";
+import { ICreateUserRequest, IFaithSpirituality, ILifestyleInformation, IPhotoIdVerification, IPreferences, IQualityProfBadge, IUser } from "./user.interfaces";
 export declare const userServices: {
     createUser: (data: Partial<ICreateUserRequest>) => Promise<import("mongoose").Document<unknown, {}, IUser, {}, {}> & IUser & Required<{
         _id: Types.ObjectId;
@@ -62,5 +62,15 @@ export declare const userServices: {
     }> & {
         __v: number;
     }>;
+    updatePhotoIdVerification: (userId: Types.ObjectId, payload: Partial<IPhotoIdVerification>) => Promise<(import("mongoose").Document<unknown, {}, IUser, {}, {}> & IUser & Required<{
+        _id: Types.ObjectId;
+    }> & {
+        __v: number;
+    }) | null>;
+    updateQualityProfBadge: (userId: Types.ObjectId, payload: Partial<IQualityProfBadge>) => Promise<(import("mongoose").Document<unknown, {}, IUser, {}, {}> & IUser & Required<{
+        _id: Types.ObjectId;
+    }> & {
+        __v: number;
+    }) | null>;
 };
 //# sourceMappingURL=user.services.d.ts.map

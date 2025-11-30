@@ -12,6 +12,22 @@ export declare enum EAuthProvider {
     APPLE = "APPLE",
     FACEBOOK = "FACEBOOK"
 }
+export declare enum EPhotoIdType {
+    NID_CARD = "NID_CARD",
+    DRIVING_LICENCE = "DRIVING_LICENCE",
+    ADHAR_CARD = "ADHAR_CARD"
+}
+export declare enum EQualityProfbadge {
+    EDUCATION = "EDUCATION",
+    EMPLOYEMENT = "EMPLOYEMENT",
+    INCOME = "INCOME"
+}
+export declare enum EStatus {
+    ACCEPT = "ACCEPT",
+    REJECT = "REJECT",
+    REQUEST = "REQUEST",
+    NON = "NON"
+}
 export interface ILocation {
     city?: string;
     country?: string;
@@ -57,6 +73,7 @@ export interface IPhotoIdVerification {
 export interface IQualityProfBadge {
     verificationType?: string;
     certificate?: string;
+    isQualityProfbadge?: EStatus;
 }
 export interface IVerification {
     photoIdVerification?: IPhotoIdVerification;

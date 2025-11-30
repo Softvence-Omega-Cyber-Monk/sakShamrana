@@ -244,6 +244,45 @@ const updateGalaryImage = async (userId, files) => {
         throw new AppError_1.default(404, "User not found");
     return updatedUser;
 };
+const updatePhotoIdVerification = async (userId, payload) => {
+    const updateData = {};
+    if (typeof payload.verificationType === "string" && payload.verificationType.trim() !== "") {
+        updateData["verification.photoIdVerification.verificationType"] =
+            payload.verificationType.trim();
+    }
+    if (typeof payload.idNumber === "string" && payload.idNumber.trim() !== "") {
+        updateData["verification.photoIdVerification.idNumber"] =
+            payload.idNumber.trim();
+    }
+    ;
+    if (Object.keys(updateData).length === 0) {
+        return null;
+    }
+    const result = await user_model_1.User.findByIdAndUpdate(userId, { $set: updateData }, { new: true, runValidators: true });
+    return result;
+};
+const updateQualityProfBadge = async (userId, payload) => {
+    const updateData = {};
+    let hasValidUpdate = false;
+    const isValid = (value) => typeof value === "string" && value.trim() !== "" && value !== null && value !== undefined;
+    if (isValid(payload.verificationType)) {
+        updateData["verification.qualityProfbadge.verificationType"] = payload.verificationType.trim();
+        hasValidUpdate = true;
+    }
+    ;
+    if (isValid(payload.certificate)) {
+        updateData["verification.qualityProfbadge.certificate"] = payload.certificate.trim();
+        hasValidUpdate = true;
+    }
+    if (hasValidUpdate) {
+        updateData["verification.qualityProfbadge.isQualityProfbadge"] = user_interfaces_1.EStatus.REQUEST;
+    }
+    if (!hasValidUpdate) {
+        return null;
+    }
+    const result = await user_model_1.User.findByIdAndUpdate(userId, { $set: updateData }, { new: true, runValidators: true });
+    return result;
+};
 exports.userServices = {
     createUser,
     otpVerify,
@@ -256,6 +295,8 @@ exports.userServices = {
     updateBio,
     updatePreferences,
     updateBasicInfo,
-    updateGalaryImage
+    updateGalaryImage,
+    updatePhotoIdVerification,
+    updateQualityProfBadge
 };
 //# sourceMappingURL=user.services.js.map

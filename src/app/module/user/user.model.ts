@@ -134,6 +134,18 @@ const userSchema = new mongoose.Schema<IUser>({
         type: Number,
         default: 0
     },
+    totalDipositAmount: {
+        type: Number,
+        default: 0
+    },
+    totalBalance: {
+        type: Number,
+        default: 0
+    },
+    totalWithdrowAmount: {
+        type: Number,
+        default: 0
+    },
     isBlurTokenUnlimited: {
         type: Boolean,
         default: false

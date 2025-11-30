@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { IPayment } from "./payment.interfaces";
+import { IPayment, PStatus } from "./payment.interfaces";
 
 
 const paymentSchema = new mongoose.Schema<IPayment>({
@@ -15,6 +15,11 @@ const paymentSchema = new mongoose.Schema<IPayment>({
     amount: {
         type: Number,
         required: true
+    },
+    paymentStatus: {
+        type: String,
+        enum: PStatus,
+        default: PStatus.PENDING
     }
 }, {
     timestamps: true,

@@ -31,6 +31,9 @@ export declare const authServices: {
         usedBlurToken?: number;
         isBlurTokenUnlimited?: boolean;
         expireDateSubscription?: Date;
+        totalDipositAmount?: number;
+        totalWithdrowAmount?: number;
+        totalBalance?: number;
         createdAt?: Date;
         updatedAt?: Date;
         __v: number;
